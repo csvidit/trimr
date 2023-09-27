@@ -1,35 +1,64 @@
-import { AuthDispatchContext } from "@/app/AuthContext";
-import { auth } from "@/firebase.config";
-import { signOut } from "firebase/auth";
-import { useContext } from "react";
+"use client";
+
+import { motion } from "framer-motion";
+import User from "./User";
+import { useState } from "react";
+import { types } from "util";
+import { PiCopyDuotone, PiCopySimple } from "react-icons/pi";
+import Success from "./Success";
+import Error from "./Error";
+import CreateForm from "./CreateForm";
+import CreateLoading from "./CreateLoading";
+
+export type Item = {
+  version: number;
+  uid: string;
+  originalUrl: string;
+  trimmedSlug: string;
+  trimmedUrl: string;
+  active: boolean;
+};
 
 const Create = () => {
-  const dispatch = useContext(AuthDispatchContext);
-
-  const handleSignout = async () => {
-    await signOut(auth)
-      .then(() => {
-        auth.updateCurrentUser(null);
-        dispatch!({ type: "LOGOUT", payload: null });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  const [url, setUrl] = useState("");
+  const [complete, setComplete] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<Item>({} as Item);
 
   return (
-    <div className="p-8 h-fit rounded-2xl col-span-4 flex flex-col space-y-4 bg-zinc-900 text-2xl text-zinc-100">
-      <span className="font-bold">
-        <span className="ml-2">create</span>
-        <span className="ml-2 text-zinc-400 font-normal">a new trimd url</span>
-        <button
-          onClick={() => {
-            handleSignout();
-          }}
-        >
-          sign out
-        </button>
-      </span>
-    </div>
+    <>
+      <div className="p-8 h-fit rounded-2xl col-span-4 flex flex-col space-y-4 bg-zinc-900 text-2xl text-zinc-100">
+        <span className="font-bold">
+          <span className="ml-2">create</span>
+          <span className="ml-2 text-zinc-400 font-normal">
+            a new trimmed url
+          </span>
+        </span>
+        {loading ? (
+          <CreateLoading/>
+        ) : (
+          <CreateForm
+            setLoading={setLoading}
+            setComplete={setComplete}
+            setData={setData}
+            setSuccess={setSuccess}
+            url={url}
+            setUrl={setUrl}
+          />
+        )}
+      </div>
+      {complete ? (
+        success ? (
+          <Success url="v-k.pw/3758hwdj385" />
+        ) : (
+          <Error />
+        )
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
+
+export default Create;

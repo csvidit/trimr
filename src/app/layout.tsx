@@ -1,10 +1,21 @@
-'use client'
+"use client";
 
 import "./globals.css";
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
-import { AuthContext, AuthDispatchContext, initialUserState, userReducer } from "./AuthContext";
-import { useReducer } from "react";
+import {
+  AuthContext,
+  AuthDispatchContext,
+  initialUserState,
+  userReducer,
+} from "./AuthContext";
+import { useEffect, useReducer } from "react";
+import {
+  browserLocalPersistence,
+  onAuthStateChanged,
+  setPersistence,
+} from "firebase/auth";
+import { auth } from "@/firebase.config";
 
 const manrope = Manrope({ subsets: ["latin"] });
 
@@ -19,6 +30,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const [currentUser, dispatch] = useReducer(userReducer, initialUserState);
+  setPersistence(auth, browserLocalPersistence);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch({ type: "LOGIN", payload: user });
+      } else {
+        dispatch({ type: "LOGOUT", payload: null });
+      }
+    });
+  });
+
   return (
     <AuthContext.Provider value={currentUser}>
       <AuthDispatchContext.Provider value={dispatch}>

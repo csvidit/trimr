@@ -1,8 +1,13 @@
-'use client'
+"use client";
 
 import { AuthDispatchContext } from "@/app/AuthContext";
 import { auth } from "@/firebase.config";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+    browserLocalPersistence,
+  browserSessionPersistence,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import React, { useContext } from "react";
 
 const Login = () => {
@@ -30,7 +35,7 @@ const Login = () => {
           onChange={(e) => {
             setEmail(e.target.value);
           }}
-          className="rounded-lg p-2 bg-zinc-800 text-zinc-100 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+          className="rounded-lg p-2 bg-zinc-800 text-zinc-100 border-none focus:outline-none focus:ring-1 focus:ring-indigo-400"
           type="text"
           placeholder="username"
         />
@@ -39,7 +44,7 @@ const Login = () => {
           onChange={(e) => {
             setPassword(e.target.value);
           }}
-          className="rounded-lg p-2 bg-zinc-800 text-zinc-100 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+          className="rounded-lg p-2 bg-zinc-800 text-zinc-100 border-none focus:outline-none focus:ring-1 focus:ring-indigo-400"
           type="password"
           placeholder="password"
         />
@@ -47,8 +52,8 @@ const Login = () => {
           onClick={() => {
             handleSubmit();
           }}
-          type="submit"
-          className="w-fit rounded-lg bg-zinc-400 text-zinc-900 px-8 py-2 hover:bg-zinc-200 transition-all duration-200 ease-in-out"
+          type="button"
+          className="w-fit rounded-lg px-8 py-2 hover:border-indigo-400 bg-indigo-400 hover:bg-zinc-800 text-zinc-900 hover:text-zinc-100 transition-all duration-200 ease-in-out"
         >
           go
         </button>
