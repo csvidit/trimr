@@ -28,16 +28,16 @@ const Create = () => {
 
   return (
     <>
-      <div className="p-8 h-fit rounded-2xl col-span-4 flex flex-col space-y-4 bg-zinc-900 text-2xl text-zinc-100">
-        <span className="font-bold">
-          <span className="ml-2">create</span>
-          <span className="ml-2 text-zinc-400 font-normal">
-            a new trimmed url
+      {loading && <CreateLoading />}
+      {!loading && (
+        <div className="p-8 h-fit rounded-2xl col-span-4 flex flex-col space-y-4 bg-zinc-900 text-2xl text-zinc-100">
+          <span className="font-bold">
+            <span className="">create</span>
+            <span className="ml-2 text-zinc-400 font-normal">
+              a new trimmed url
+            </span>
           </span>
-        </span>
-        {loading ? (
-          <CreateLoading/>
-        ) : (
+
           <CreateForm
             setLoading={setLoading}
             setComplete={setComplete}
@@ -46,8 +46,8 @@ const Create = () => {
             url={url}
             setUrl={setUrl}
           />
-        )}
-      </div>
+        </div>
+      )}
       {complete ? (
         success ? (
           <Success url="v-k.pw/3758hwdj385" />

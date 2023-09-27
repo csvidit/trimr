@@ -9,13 +9,15 @@ import {
   initialUserState,
   userReducer,
 } from "./AuthContext";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import {
   browserLocalPersistence,
   onAuthStateChanged,
   setPersistence,
 } from "firebase/auth";
 import { auth } from "@/firebase.config";
+import Loading from "@/components/Loading";
+import MainContainer from "@/components/MainContainer";
 
 const manrope = Manrope({ subsets: ["latin"] });
 
@@ -30,14 +32,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const [currentUser, dispatch] = useReducer(userReducer, initialUserState);
+  const [isLoading, setLoading] = useState(true);
   setPersistence(auth, browserLocalPersistence);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         dispatch({ type: "LOGIN", payload: user });
+        setLoading(false);
       } else {
         dispatch({ type: "LOGOUT", payload: null });
+        setLoading(false);
       }
     });
   });
@@ -49,7 +54,7 @@ export default function RootLayout({
           <body
             className={`flex flex-col items-center bg-black px-4 p-8 antialiased font-medium ${manrope.className}`}
           >
-            {children}
+            {isLoading ? <Loading/> : <>{children}</>}
           </body>
         </html>
       </AuthDispatchContext.Provider>

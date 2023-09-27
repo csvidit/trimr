@@ -4,6 +4,7 @@ import { AuthContext, AuthDispatchContext } from "@/app/AuthContext";
 import { auth } from "@/firebase.config";
 import { signOut } from "firebase/auth";
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
 import { useContext, useState } from "react";
 import { PiCaretCircleDown } from "react-icons/pi";
 
@@ -52,16 +53,22 @@ const User = () => {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="absolute right-0 min-w-max rounded-lg rounded-tr-none bg-zinc-100 text-zinc-900"
+              className="flex flex-col items-center p-2 absolute right-0 min-w-max rounded-lg rounded-tr-none bg-zinc-100 text-zinc-900"
             >
               <motion.button
                 onClick={() => {
                   handleSignout();
                 }}
-                className="rounded-lg rounded-tr-none p-2 w-full hover:bg-zinc-400 transition-all duration-200 ease-in-out"
+                className="rounded-lg p-2 w-full hover:bg-indigo-200 transition-all duration-200 ease-in-out"
               >
                 sign out
               </motion.button>
+              <Link
+                href="/history"
+                className="rounded-lg p-2 w-full hover:bg-indigo-200 transition-all duration-200 ease-in-out"
+              >
+                history
+              </Link>
             </motion.div>
           )}
         </AnimatePresence>

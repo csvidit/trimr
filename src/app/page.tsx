@@ -8,6 +8,7 @@ import { useContext } from "react";
 import Intro from "@/components/Intro";
 import Create from "@/components/Create";
 import User from "@/components/User";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   const user = useContext(AuthContext);
@@ -21,6 +22,7 @@ export default function Home() {
         <>
           <User />
           <Create />
+          <Footer/>
         </>
       )}
     </MainContainer>

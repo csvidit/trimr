@@ -2,6 +2,7 @@ import { AuthContext } from "@/app/AuthContext";
 import { Item } from "./Create";
 import { motion } from "framer-motion";
 import { Dispatch, SetStateAction, useContext } from "react";
+import Button from "./Button";
 
 const CreateForm = (props: {
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -26,6 +27,7 @@ const CreateForm = (props: {
       body: JSON.stringify({ url, uid }),
     })
       .then(async (res) => {
+        console.log("INSIDE THEN OF HANDLE SUBMIT OF CREATE FORM", res.json());
         const data = await res.json();
         console.log(data);
         props.setData(data);
@@ -52,16 +54,13 @@ const CreateForm = (props: {
         type="text"
         placeholder="enter the full url here"
       />
-      <motion.button
-        layout
-        type="button"
+      <Button
         onClick={() => {
           handleSubmit();
         }}
-        className="w-fit rounded-lg px-8 py-2 hover:border-indigo-400 bg-indigo-400 hover:bg-zinc-800 text-zinc-900 hover:text-zinc-100 transition-all duration-200 ease-in-out"
       >
         go
-      </motion.button>
+      </Button>
     </form>
   );
 };
