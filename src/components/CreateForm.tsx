@@ -18,6 +18,7 @@ const CreateForm = (props: {
     const uid = user?.uid;
     const url = props.url;
     props.setLoading(true);
+    props.setComplete(false);
     console.log("submit");
     await fetch("/api/create", {
       method: "POST",
@@ -27,8 +28,8 @@ const CreateForm = (props: {
       body: JSON.stringify({ url, uid }),
     })
       .then(async (res) => {
-        console.log("INSIDE THEN OF HANDLE SUBMIT OF CREATE FORM", res.json());
         const data = await res.json();
+        console.log("INSIDE THEN OF HANDLE SUBMIT OF CREATE FORM", data);
         console.log(data);
         props.setData(data);
         props.setComplete(true);

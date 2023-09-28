@@ -50,7 +50,7 @@ const Create = () => {
       )}
       {complete ? (
         success ? (
-          <Success url="v-k.pw/3758hwdj385" />
+          <Success url={data.trimmedUrl} />
         ) : (
           <Error />
         )

@@ -18,6 +18,7 @@ import {
 import { auth } from "@/firebase.config";
 import Loading from "@/components/Loading";
 import MainContainer from "@/components/MainContainer";
+import Intro from "@/components/Intro";
 
 const manrope = Manrope({ subsets: ["latin"] });
 
@@ -54,7 +55,14 @@ export default function RootLayout({
           <body
             className={`flex flex-col items-center bg-black px-4 p-8 antialiased font-medium ${manrope.className}`}
           >
-            {isLoading ? <Loading/> : <>{children}</>}
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <MainContainer>
+                <Intro />
+                {children}
+              </MainContainer>
+            )}
           </body>
         </html>
       </AuthDispatchContext.Provider>

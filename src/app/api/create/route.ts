@@ -1,10 +1,20 @@
 import { firestore } from "@/firebase.config";
-import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  where,
+  query,
+  getDocs,
+} from "firebase/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
 import { customAlphabet, nanoid } from "nanoid";
 import { NextRequest, NextResponse } from "next/server";
 
-type Item = {
+export type Item = {
   version: number;
   uid: string;
   originalUrl: string;
@@ -35,41 +45,61 @@ export async function POST(req: NextRequest, res: NextResponse) {
     trimmedUrl: "https://v-k.pw/" + trimmedSlug,
     active: true,
   };
-  const matchesRef = doc(firestore, "data", "matches");
+
+  const matchJson = {
+    uid: uid,
+    originalUrl: url,
+    trimmedSlug: trimmedSlug,
+  };
+  const matchesRef = doc(firestore, "matches", trimmedSlug);
   const matchesSnap = await getDoc(matchesRef);
+  const q = query(
+    collection(firestore, "matches"),
+    where("originalUrl", "==", url)
+  );
 
-  const trimmedAllRef = doc(firestore, "data", "trimmed");
-  // const trimmedAllSnap = await getDoc(trimmedAllRef);
-  const trimmedAllUpdate = await updateDoc(trimmedAllRef, {
-    items: arrayUnion(itemJson),
-  })
-    .then(async (response) => {
-      console.log("trimmedAllUpdate", response);
-      const matches = doc(firestore, "data", "matches");
-      const recordToAdd = {
-        [url]: trimmedSlug,
-      }
-      const matchesUpdate = await updateDoc(matchesRef, recordToAdd)
-        .then((response) => {
-          return NextResponse.json(itemJson, { status: 200 });
-        })
-        .catch((error) => {
-          return NextResponse.json(error, { status: 500 });
-        });
+  const querySnapshot = await getDocs(q);
 
-      // res = new NextResponse(JSON.stringify(itemJson), { status: 200 });
-      // return res;
-      // return new Response(JSON.stringify(itemJson), { status: 200 });
-    })
-    .catch((error) => {
-      console.log("INTERNAL SERVER ERROR", error);
-      return NextResponse.json(error, { status: 500 });
-      // return new Response(JSON.stringify(error), { status: 500 });
-    });
-
+  if (querySnapshot.empty == false) {
+    return NextResponse.json(querySnapshot.docs[0].data(), { status: 200 });
+  } else {
+    await setDoc(doc(firestore, "matches", trimmedSlug), itemJson);
+    return NextResponse.json(itemJson, { status: 200 });
+  }
   // return NextResponse.json("INTERNAL SERVER ERROR", { status: 500 });
 }
 // }
+
+// const userHistoryRef = doc(firestore, users, uid, "items");
+
+//   const trimmedAllRef = doc(firestore, "data", "trimmed");
+//   // const trimmedAllSnap = await getDoc(trimmedAllRef);
+//   const trimmedAllUpdate = await updateDoc(trimmedAllRef, {
+//     items: arrayUnion(itemJson),
+//   })
+//     .then(async (response) => {
+//       console.log("trimmedAllUpdate", response);
+//       const matches = doc(firestore, "data", "matches");
+//       const recordToAdd = {
+//         [url]: trimmedSlug,
+//       }
+//       const matchesUpdate = await updateDoc(matchesRef, recordToAdd)
+//         .then((response) => {
+//           return NextResponse.json(itemJson, { status: 200 });
+//         })
+//         .catch((error) => {
+//           return NextResponse.json(error, { status: 500 });
+//         });
+
+//       // res = new NextResponse(JSON.stringify(itemJson), { status: 200 });
+//       // return res;
+//       // return new Response(JSON.stringify(itemJson), { status: 200 });
+//     })
+//     .catch((error) => {
+//       console.log("INTERNAL SERVER ERROR", error);
+//       return NextResponse.json(error, { status: 500 });
+//       // return new Response(JSON.stringify(error), { status: 500 });
+//     });
 
 // else {
 //   const docData = { items: [] };
