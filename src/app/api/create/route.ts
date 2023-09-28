@@ -42,7 +42,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     uid: uid,
     originalUrl: url,
     trimmedSlug: trimmedSlug,
-    trimmedUrl: "https://v-k.pw/" + trimmedSlug,
+    trimmedUrl: "https://trimr.vercel.app/" + trimmedSlug,
     active: true,
   };
 
