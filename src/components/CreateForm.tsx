@@ -1,4 +1,4 @@
-import { AuthContext } from "@/app/AuthContext";
+import { AuthContext } from "@/app/(authenticated)/AuthContext";
 import { Item } from "./Create";
 import { motion } from "framer-motion";
 import { Dispatch, SetStateAction, useContext } from "react";
@@ -51,7 +51,7 @@ const CreateForm = (props: {
           props.setUrl(e.target.value);
         }}
         value={props.url}
-        className="rounded-lg p-2 bg-zinc-800 text-zinc-100 border-none focus:outline-none focus:ring-1 focus:ring-indigo-400"
+        className="rounded-lg px-4 py-2 bg-zinc-800 text-zinc-100 border-none focus:outline-none focus:ring-1 focus:ring-indigo-400"
         type="text"
         placeholder="enter the full url here"
       />

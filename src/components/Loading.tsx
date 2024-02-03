@@ -1,4 +1,4 @@
-import { BarLoader, BounceLoader } from "react-spinners";
+import { BarLoader } from "react-spinners";
 import Logo from "./Logo";
 
 const Loading = () => {

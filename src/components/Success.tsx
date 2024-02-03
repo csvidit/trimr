@@ -7,7 +7,7 @@ const Success = (props: { url: string }) => {
   return (
     <GridItem>
       <span className="font-bold">
-        <span className="ml-2 text-emerald-400">success!</span>
+        <span className="text-emerald-400">success!</span>
         <span className="ml-2 text-zinc-400 font-normal">here is your url</span>
       </span>
      <CopyArea>{props.url}</CopyArea>

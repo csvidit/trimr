@@ -1,8 +1,8 @@
 "use client";
 
-import "./globals.css";
+import "../globals.css"
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Figtree } from "next/font/google";
 import {
   AuthContext,
   AuthDispatchContext,
@@ -20,7 +20,7 @@ import Loading from "@/components/Loading";
 import MainContainer from "@/components/MainContainer";
 import Intro from "@/components/Intro";
 
-const manrope = Manrope({ subsets: ["latin"] });
+const figtree = Figtree({ subsets: ["latin"] });
 
 // export const metadata: Metadata = {
 //   title: "Create Next App",
@@ -53,7 +53,7 @@ export default function RootLayout({
       <AuthDispatchContext.Provider value={dispatch}>
         <html lang="en">
           <body
-            className={`flex flex-col items-center bg-black px-4 p-8 antialiased font-medium ${manrope.className}`}
+            className={`flex flex-col items-center bg-black px-4 p-8 antialiased font-medium ${figtree.className}`}
           >
             {isLoading ? (
               <Loading />

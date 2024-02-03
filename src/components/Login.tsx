@@ -1,14 +1,16 @@
 "use client";
 
-import { AuthDispatchContext } from "@/app/AuthContext";
+import { AuthDispatchContext } from "@/app/(authenticated)/AuthContext";
 import { auth } from "@/firebase.config";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { AuthErrorCodes, signInWithEmailAndPassword } from "firebase/auth";
 import React, { useContext } from "react";
 import Button from "./Button";
+import { PiShieldWarning, PiShieldWarningDuotone } from "react-icons/pi";
 
 const Login = () => {
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
+  const [error, setError] = React.useState<string | null>(null);
   const dispatch = useContext(AuthDispatchContext);
 
   const handleSubmit = async () => {
@@ -19,7 +21,15 @@ const Login = () => {
         dispatch!({ type: "LOGIN", payload: userCredential.user });
       })
       .catch((error) => {
-        console.log(error);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        if (
+          errorCode === AuthErrorCodes.INVALID_PASSWORD ||
+          errorCode === AuthErrorCodes.INVALID_EMAIL
+        ) {
+          setError("invalid username or password");
+        }
       });
   };
   return (
@@ -31,7 +41,7 @@ const Login = () => {
           onChange={(e) => {
             setEmail(e.target.value);
           }}
-          className="rounded-lg p-2 bg-zinc-800 text-zinc-100 border-none focus:outline-none focus:ring-1 focus:ring-indigo-400"
+          className="rounded-lg px-4 py-2 bg-zinc-800 text-zinc-100 border-none focus:outline-none focus:ring-1 focus:ring-indigo-400"
           type="text"
           placeholder="username"
         />
@@ -40,10 +50,18 @@ const Login = () => {
           onChange={(e) => {
             setPassword(e.target.value);
           }}
-          className="rounded-lg p-2 bg-zinc-800 text-zinc-100 border-none focus:outline-none focus:ring-1 focus:ring-indigo-400"
+          className="rounded-lg px-4 py-2 bg-zinc-800 text-zinc-100 border-none focus:outline-none focus:ring-1 focus:ring-indigo-400"
           type="password"
           placeholder="password"
         />
+        {error && (
+          <div className="flex flex-row space-x-1 items-center flex-wrap px-4 py-2 bg-red-950 rounded-lg w-fit text-red-500">
+            <span className="w-fit">
+              <PiShieldWarning/>
+            </span>
+            <span className="">{error}</span>
+          </div>
+        )}
         <Button
           onClick={() => {
             handleSubmit();

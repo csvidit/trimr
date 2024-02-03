@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthContext, AuthDispatchContext } from "@/app/AuthContext";
+import { AuthContext, AuthDispatchContext } from "@/app/(authenticated)/AuthContext";
 import { auth } from "@/firebase.config";
 import { signOut } from "firebase/auth";
 import { AnimatePresence, motion } from "framer-motion";
@@ -26,12 +26,12 @@ const User = () => {
   };
   return (
     <div className="p-8 h-fit rounded-2xl col-span-4 flex flex-wrap flex-col lg:flex-row space-y-4 lg:space-y-0 justify-start lg:justify-between  items-end bg-zinc-900 text-zinc-100">
-      <span className="font-bold text-2xl">
+      <div className="flex flex-row lg:space-x-1 flex-wrap font-bold text-2xl w-fit">
         <span className="">welcome</span>
-        <span className="ml-2 text-zinc-400 font-normal flex-wrap">
+        <p className="text-zinc-400 font-normal flex-wrap">
           {user?.email}
-        </span>
-      </span>
+        </p>
+      </div>
       <div className="self-center relative p-0 m-0">
         <motion.button
           transition={{ duration: 0.2 }}
