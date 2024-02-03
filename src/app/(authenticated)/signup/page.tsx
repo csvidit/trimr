@@ -1,26 +1,17 @@
 "use client";
 
 import Login from "@/components/Login";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../AuthContext";
 import { useContext } from "react";
 import Create from "@/components/Create";
 import User from "@/components/User";
 import Footer from "@/components/Footer";
+import Signup from "@/components/Signup";
+import { redirect, useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const user = useContext(AuthContext);
 
-  return (
-    <>
-      {user == null ? (
-        <Login />
-      ) : (
-        <>
-          <User />
-          <Create />
-          <Footer />
-        </>
-      )}
-    </>
-  );
+  return <>{user == null || undefined ? <Signup /> : router.replace("/")}</>;
 }

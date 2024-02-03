@@ -2,13 +2,17 @@
 
 import { AuthDispatchContext } from "@/app/(authenticated)/AuthContext";
 import { auth } from "@/firebase.config";
-import { AuthErrorCodes, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  AuthErrorCodes,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import React, { useContext } from "react";
 import Button from "./Button";
-import { PiShieldWarning, PiShieldWarningDuotone } from "react-icons/pi";
+import { PiShieldWarning } from "react-icons/pi";
 import SecondaryLink from "./SecondaryLink";
 
-const Login = () => {
+const Signup = () => {
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
   const [error, setError] = React.useState<string | null>(null);
@@ -16,7 +20,7 @@ const Login = () => {
 
   const handleSubmit = async () => {
     console.log("submitting");
-    await signInWithEmailAndPassword(auth, email, password)
+    await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         await auth.updateCurrentUser(userCredential.user);
         dispatch!({ type: "LOGIN", payload: userCredential.user });
@@ -29,13 +33,15 @@ const Login = () => {
           errorCode === AuthErrorCodes.INVALID_PASSWORD ||
           errorCode === AuthErrorCodes.INVALID_EMAIL
         ) {
-          setError("invalid username or password");
+          setError("there was an error creating your account");
+        } else if (errorCode === AuthErrorCodes.EMAIL_EXISTS) {
+          setError("an account already exists with that email");
         }
       });
   };
   return (
     <div className="p-8 h-fit rounded-2xl col-span-4 flex flex-col space-y-4 bg-zinc-900 text-2xl text-zinc-100">
-      <span className="font-bold">login</span>
+      <span className="font-bold">sign up</span>
       <form className="flex flex-col space-y-4 text-base placeholder:text-zinc-400">
         <input
           content={email}
@@ -58,7 +64,7 @@ const Login = () => {
         {error && (
           <div className="flex flex-row space-x-1 items-center flex-wrap px-4 py-2 bg-red-950 rounded-lg w-fit text-red-500">
             <span className="w-fit">
-              <PiShieldWarning/>
+              <PiShieldWarning />
             </span>
             <span className="">{error}</span>
           </div>
@@ -71,11 +77,11 @@ const Login = () => {
           >
             go
           </Button>
-          <SecondaryLink href="/signup">sign up</SecondaryLink>
+          <SecondaryLink href="/">go back to login</SecondaryLink>
         </div>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default Signup;
