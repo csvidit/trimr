@@ -44,7 +44,7 @@ const Login = () => {
           }}
           className="rounded-lg px-4 py-2 bg-zinc-800 text-zinc-100 border-none focus:outline-none focus:ring-1 focus:ring-indigo-400"
           type="text"
-          placeholder="username"
+          placeholder="email address"
         />
         <input
           content={password}
@@ -71,6 +71,7 @@ const Login = () => {
           >
             go
           </Button>
+          <SecondaryLink href="/forgot">forgot password</SecondaryLink>
           <SecondaryLink href="/signup">sign up</SecondaryLink>
         </div>
       </form>

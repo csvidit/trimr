@@ -29,7 +29,7 @@ const User = () => {
   };
   return (
     <div className="p-8 h-fit rounded-2xl col-span-4 flex flex-wrap flex-col lg:flex-row space-y-4 lg:space-y-0 justify-start lg:justify-between  items-end bg-zinc-900 text-zinc-100">
-      <div className="flex flex-row lg:space-x-1 flex-wrap font-bold text-2xl w-fit">
+      <div className="flex flex-row lg:space-x-1 flex-wrap font-bold lg:text-xl w-fit">
         <span className="">welcome</span>
         <p className="text-zinc-400 font-normal flex-wrap">{user?.email}</p>
       </div>
@@ -41,7 +41,7 @@ const User = () => {
           whileTap={{ scale: 0.8 }}
           whileFocus={{ scale: 0.8 }}
           style={{ rotate: openMenu ? "180deg" : "0deg" }}
-          className="text-indigo-400 text-2xl"
+          className="text-indigo-400 lg:text-xl"
           onClick={() => {
             setOpenMenu(!openMenu);
           }}

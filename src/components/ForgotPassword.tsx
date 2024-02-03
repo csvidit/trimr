@@ -5,43 +5,42 @@ import { auth } from "@/firebase.config";
 import {
   AuthErrorCodes,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import React, { useContext } from "react";
 import Button from "./Button";
 import { PiShieldWarning } from "react-icons/pi";
 import SecondaryLink from "./SecondaryLink";
+import { toast } from "sonner";
 
-const Signup = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = React.useState<string>("");
-  const [password, setPassword] = React.useState<string>("");
   const [error, setError] = React.useState<string | null>(null);
   const dispatch = useContext(AuthDispatchContext);
 
   const handleSubmit = async () => {
     console.log("submitting");
-    await createUserWithEmailAndPassword(auth, email, password)
+    await sendPasswordResetEmail(auth, email)
       .then(async (userCredential) => {
-        await auth.updateCurrentUser(userCredential.user);
-        dispatch!({ type: "LOGIN", payload: userCredential.user });
+        toast.success("password reset email sent");
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
         if (
-          errorCode === AuthErrorCodes.INVALID_PASSWORD ||
           errorCode === AuthErrorCodes.INVALID_EMAIL
         ) {
-          setError("there was an error creating your account");
-        } else if (errorCode === AuthErrorCodes.EMAIL_EXISTS) {
-          setError("an account already exists with that email");
+          toast.error("invalid email address");
+        } else if (errorCode === AuthErrorCodes.INTERNAL_ERROR) {
+          setError("internal error, please try again later");
         }
       });
   };
   return (
-    <div className="p-8 h-fit rounded-2xl col-span-4 flex flex-col space-y-4 bg-zinc-900 lg:text-xl text-zinc-100">
-      <span className="font-bold">sign up</span>
+    <div className="p-8 h-fit rounded-2xl col-span-4 flex flex-col space-y-4 bg-zinc-900 text-2xl text-zinc-100">
+      <span className="font-bold">reset password</span>
       <form className="flex flex-col space-y-4 text-base placeholder:text-zinc-400">
         <input
           content={email}
@@ -50,16 +49,7 @@ const Signup = () => {
           }}
           className="rounded-lg px-4 py-2 bg-zinc-800 text-zinc-100 border-none focus:outline-none focus:ring-1 focus:ring-indigo-400"
           type="text"
-          placeholder="username"
-        />
-        <input
-          content={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-          className="rounded-lg px-4 py-2 bg-zinc-800 text-zinc-100 border-none focus:outline-none focus:ring-1 focus:ring-indigo-400"
-          type="password"
-          placeholder="password"
+          placeholder="email address"
         />
         {error && (
           <div className="flex flex-row space-x-1 items-center flex-wrap px-4 py-2 bg-red-950 rounded-lg w-fit text-red-500">
@@ -75,7 +65,7 @@ const Signup = () => {
               handleSubmit();
             }}
           >
-            go
+            send email
           </Button>
           <SecondaryLink href="/">go back to login</SecondaryLink>
         </div>
@@ -84,4 +74,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default ForgotPassword;
