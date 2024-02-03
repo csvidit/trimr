@@ -8,6 +8,8 @@ const History = (props: { data: Array<Match> }) => {
         key={fields.trimmedSlug.stringValue}
         originalUrl={fields.originalUrl.stringValue}
         trimmedUrl={fields.trimmedUrl.stringValue}
+        dateString={fields.createdOn.stringValue}
+        clickCount={fields.clickCount.integerValue}
       />
     );
   });

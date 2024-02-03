@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import GridItem from "@/components/GridItem";
 import { firestore } from "@/firebase.config";
-import { query, collection, where, getDocs } from "firebase/firestore";
+import { query, collection, where, getDocs, setDoc, doc } from "firebase/firestore";
 
 const getData = async (routeSlug: string) => {
   console.log("GETTING DATA");
@@ -19,6 +19,12 @@ const getData = async (routeSlug: string) => {
       return null;
     } else {
       console.log("QUERY SNAPSHOT", querySnapshot.docs[0].data().originalUrl);
+      const updatedDoc = {
+        clickCount: querySnapshot.docs[0].data().clickCount + 1,
+      };
+      await setDoc(doc(firestore, "matches", querySnapshot.docs[0].id), updatedDoc, { merge: true }).then(() => {
+        console.log("Document successfully updated!");
+      })
       return querySnapshot.docs[0].data().originalUrl;
     }
   } catch (error) {
@@ -26,10 +32,6 @@ const getData = async (routeSlug: string) => {
     throw error; // Rethrow the error to be caught in the calling function
   }
 };
-
-// export async function routerRedirect(route: string) {
-//   return redirect(route)
-// }
 
 const DynamicTrimmedLinkPage = async ({
   params,

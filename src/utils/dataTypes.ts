@@ -25,6 +25,12 @@ type Match = {
             version: {
               integerValue: number;
             };
+            clickCount: {
+              integerValue: number;
+            };
+            createdOn: {
+              stringValue: string;
+            };
           };
         };
       };
