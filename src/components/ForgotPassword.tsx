@@ -29,12 +29,10 @@ const ForgotPassword = () => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
-        if (
-          errorCode === AuthErrorCodes.INVALID_EMAIL
-        ) {
+        if (errorCode === AuthErrorCodes.INVALID_EMAIL) {
           toast.error("invalid email address");
         } else if (errorCode === AuthErrorCodes.INTERNAL_ERROR) {
-          setError("internal error, please try again later");
+          toast.error("internal server error, please try again later");
         }
       });
   };

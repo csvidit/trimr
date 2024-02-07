@@ -11,11 +11,11 @@ import React, { useContext } from "react";
 import Button from "./Button";
 import { PiShieldWarning } from "react-icons/pi";
 import SecondaryLink from "./SecondaryLink";
+import { toast } from "sonner";
 
 const Signup = () => {
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
-  const [error, setError] = React.useState<string | null>(null);
   const dispatch = useContext(AuthDispatchContext);
 
   const handleSubmit = async () => {
@@ -33,9 +33,9 @@ const Signup = () => {
           errorCode === AuthErrorCodes.INVALID_PASSWORD ||
           errorCode === AuthErrorCodes.INVALID_EMAIL
         ) {
-          setError("there was an error creating your account");
+          toast.error("there was an error creating your account");
         } else if (errorCode === AuthErrorCodes.EMAIL_EXISTS) {
-          setError("an account already exists with that email");
+          toast.error("an account already exists with that email");
         }
       });
   };
@@ -61,14 +61,6 @@ const Signup = () => {
           type="password"
           placeholder="password"
         />
-        {error && (
-          <div className="flex flex-row space-x-1 items-center flex-wrap px-4 py-2 bg-red-950 rounded-lg w-fit text-red-500">
-            <span className="w-fit">
-              <PiShieldWarning />
-            </span>
-            <span className="">{error}</span>
-          </div>
-        )}
         <div className="flex flex-row gap-4 items-center">
           <Button
             onClick={() => {

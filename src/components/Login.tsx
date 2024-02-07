@@ -5,13 +5,13 @@ import { auth } from "@/firebase.config";
 import { AuthErrorCodes, signInWithEmailAndPassword } from "firebase/auth";
 import React, { useContext } from "react";
 import Button from "./Button";
-import { PiShieldWarning, PiShieldWarningDuotone } from "react-icons/pi";
+import { PiShieldWarning } from "react-icons/pi";
 import SecondaryLink from "./SecondaryLink";
+import { toast } from "sonner";
 
 const Login = () => {
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
-  const [error, setError] = React.useState<string | null>(null);
   const dispatch = useContext(AuthDispatchContext);
 
   const handleSubmit = async () => {
@@ -29,7 +29,7 @@ const Login = () => {
           errorCode === AuthErrorCodes.INVALID_PASSWORD ||
           errorCode === AuthErrorCodes.INVALID_EMAIL
         ) {
-          setError("invalid username or password");
+          toast.error("invalid email or password");
         }
       });
   };
@@ -55,14 +55,6 @@ const Login = () => {
           type="password"
           placeholder="password"
         />
-        {error && (
-          <div className="flex flex-row space-x-1 items-center flex-wrap px-4 py-2 bg-red-950 rounded-lg w-fit text-red-500">
-            <span className="w-fit">
-              <PiShieldWarning/>
-            </span>
-            <span className="">{error}</span>
-          </div>
-        )}
         <div className="flex flex-row gap-4 items-center">
           <Button
             onClick={() => {
