@@ -74,3 +74,5 @@ const OldMenu = () => {
     </>
   );
 };
+
+export default OldMenu;

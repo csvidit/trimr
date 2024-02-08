@@ -4,7 +4,7 @@ import GridItem from "./GridItem";
 
 const SecondaryLoading = (props: {children: React.ReactNode}) => {
   return (
-    <GridItem className="flex-row">
+    <GridItem>
       <span className="lg:text-xl ml-2 text-zinc-100">{props.children}</span>
       <BarLoader className="text-2xl " color="#818cf8" />
     </GridItem>
