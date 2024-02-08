@@ -10,12 +10,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useContext, useState } from "react";
 import { PiCaretCircleDown } from "react-icons/pi";
+import OldMenu from "./OldMenu";
 
 const User = () => {
   const user = useContext(AuthContext);
   const dispatch = useContext(AuthDispatchContext);
-
-  
 
   const handleSignout = async () => {
     await signOut(auth)
@@ -34,7 +33,7 @@ const User = () => {
         <p className="text-zinc-400 font-normal flex-wrap">{user?.email}</p>
       </div>
       <div className="self-center relative p-0 m-0">
-        
+        <OldMenu />
       </div>
       {/* <button
         onClick={() => {
